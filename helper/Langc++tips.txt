@@ -1,0 +1,323 @@
+/*
+   C++ useful tips & basic reusable code snippets
+*/
+
+#1
+
+    namespace my_space{
+
+    }
+
+#2 unicode (UTF-8, UTF-16, UTF-32)
+
+    char, wchar_t, char16_t, char32_t
+
+#3 unsigned integer type
+    CHAR_MIN in climits if = 0, char is an unsigned type with your compiler.
+
+#4 Zero initialization
+
+    int counter {0};
+    int counter {};
+
+#5 vars with fixed values
+
+const unsgined toe_count {10};
+
+#6 Literals
+
+    -123 
+    +123
+    98U
+    -1234LL
+    1234ULL
+    -1'234LL  //C++14 onwards can use ' to make more readable
+    long long distance {15'000'000}; //15 million 
+    0x1AF
+    0657   //octal literal
+    0B110101111  //Binary literal , '0B' or '0b' prefix used
+    5E3 //floating pt 5000.0
+    100.5E2 //floating pt 10050.0
+    2.5e-3  // floating pt 0.00025
+    -0.1E-3L //floating pt -0.0001L
+    .345e1F  //floating pt 3.45F
+
+#7 using
+
+    using namespace std;
+
+#8 sizeof operator
+
+    no. of bytes
+    sizeof(long long)
+    sizeof(height*height)
+
+    returns size_t  //defined in cstddef , compiler dependent.
+    use to make code compiler independent
+
+#9   formatting Stream output
+        //ostream header
+        std::fixed 
+        std::showbase
+
+        //iomanip header
+        std::setprecision(n)
+        std::setw(n)
+        std::setfill(ch)
+
+        e.g. 
+        std::cout <<std::setprecision(2) << diameter<<" feet.\n";
+        std::cout<<std::fixed <<std::setprecision(2) <<diameter<<" feet.\n";
+        std::cout<<"a="<<std::setbase(16)<<std::setw(6)<<std::showbase<<a<<'\n';
+
+#10 Explicit Type Conversion
+    static_cast<type_to_convert_to>(expression)
+    e.g. y = static_cast<int>(z);
+    double val1 {10.9}
+    double val2 {15.9}
+    int whole_number {static_cast<int>(val1) + static_cast<int>(val2)};
+    //std::round, std::lround, std::llround cmath funcs can alsi be used.
+
+#11 Finding the limits
+    std::numeric_limits<double>::max()  //maximum vall that can b estored
+    std::numeric_limits<double>::min() //minimum POSITIVE value that can be stored in double var
+    std::numeric_limits<double>::lowest() 
+
+#12
+    std::numeric_limits<type_name>::digits  //no. of binary digits or bits
+    //NOTE: for foating pt u will get no. of bits in Mantissa
+    std::numeric_limits<float>::infinity();
+
+#13 working with char val1
+
+    char ch{'A'};
+    std::cout<<"ch is '"<< ch
+             << "' which is code " << std::hex << std::showbase
+             << static_cast<int>(ch) <<std::emdl;
+
+#14 working with Unicode Chars
+    wchar_t wch{L'Z'}; //wide char literal
+    wchar_t wch {L'\x0438'};     //Cyrillic , other language char e.g.
+    char16_t letter {u'B'};     //Initialized with UTF-16 code for B
+    char32_t letter {U'B'};     //Initialized with UTF-32 code for cyrillic
+    wcin wcout       //std library i/o streams for outputing chars of type wchar_t
+
+#15 The auto keyword
+    auto m {10}    // m has type int
+    auto m = 10;   // m has type int
+
+    auto m = {10};  //NOTE: type deduced for m will not be int. but instead will be std::intializer_list<int>
+                    //NOTE: '=' sign
+    //similar to 
+    auto list = {1,2,3};
+
+    //c++11 c++14
+    auto i {10};     //i has type std::initializer_list<int>
+
+    //c++17 onwards
+    auto i {10};     //i has type int
+    auto list{1,2,3}; //do not compile
+
+
+#16 enum
+    enum class Day {Monday,Tuesday, Wednesday, Thurs, Fri, Sat, Sun};
+    Day today {Day::Tuesday};
+    enum class Day {Monday=2, Tuesday, Wednesday, Thurs, Fri, Sat, Sun};
+    enum class Punctuation : char {Comma = ',', Exclamation = '!', Question='?'};
+
+    std::cout<<static_cast<char>(Punctuation::Exclamation)<<endl;
+
+
+#17 Lifetime of a variable
+    static
+    automatic
+    dynamic storage duration
+    thread_local
+
+#18 array
+    unsigned int height[6] {1,2,3,4,5,6};
+    unsigned int height[6] {1,2,3};        //element values: 1 2 3 0 0 0
+    unsigned int height[6] {};     // all elements 0
+    const unsigned int height[6] {1,2,3,4,5,6}; //array cannot be modified
+    int values[] {2,3,4}
+
+    //determining size of an array
+    int values[] {2,3,5,7,11,13}
+
+    int size = sizeof(values)/ sizeof(values[0]);
+    inr sz   = std::size(values);
+
+    char vowels[6] {'a','e','i','o','u'};
+    char name[10] {"Mae West"};
+    std::cout<< name <<std:endl ;   //only works for char array and not for int, also the array should be terminated with '\0'
+
+    double carrots[3][2] {
+                    {2.5, 3.2},  //1st row
+                    {4.1, 3.9},  //2nd row
+                    {2.8, 0.9}   //3rd row
+    }
+
+    //NOTE: compiler can determine only one dimension, it has to be first one
+    double carrots[][2] {
+                    {2.5, 3.2},  //1st row
+                    {4.1, 3.9},  //2nd row
+                    {2.8, 0.9}   //3rd row
+    }
+
+    char stars[][80] {
+                "Robert Refford",
+                "lassie",
+                "Oliver"
+    }
+
+    //to get no. of rows use "std::size(stars)"
+    //to get no. of cols in a particular row use "std::size(stars[rowindex]);"
+
+    //alocating array at runtime
+    size_t count {};
+    std::cout<<"ente value";
+    std::cin>>count;
+    unsigned int height[count];
+
+
+#19 switch
+   switch ( initialization; condition){ ...}  //c++17 onwards
+
+#20 for Loop with Floating Point values
+    for(doible radius {2.5}; radius <= 20.0;radius +=2.5)
+        std::cout<<"radius ="<<std::setw(12)<<radius<< " area = " << std::setw(12)<<pi*radius*radius <<std::endl;
+
+#21 range based for Loop
+    syntax:
+        for (range_declaration : range_expression)
+            loop statement or block;
+    e.g.
+    int values[] {2,3,5,7,11,13}
+    for(int x: values)
+        total += x;
+    
+    for(auto x: {1,2,3})
+        total += x;
+
+#22 array containers
+    std::array<T, N> values;
+
+    std::array<double, 100> values {0.5, 1.0, 1.5, 2.0};  //5th and subsequent elements are 0.0
+    values.fill(3.142);     //set all elements to pi
+    values.at(index);
+    values.front();     //values[0]
+    values.back();      //values[values.size()-1]
+
+    //NOTE: we can compare entire array container
+    std::array<double,4> these {1.0,2.0,3.0,4.0};
+    std::array<double,4> those {1.0,2.0,3.0,4.0};
+
+    if(these  == those) std::cout << "these and those are equal." <<std::endl;
+
+    //NOTE: u can assign one array container to another, as long as they are of same size.
+    these = those
+
+    //NOTE: array<> objects can be stored inside other containerss. Regular array cannot.
+    e.g.
+    std::vector<std::array<int, 3>> triplets;
+
+#23 std::vector<T> containers
+
+    std::vector<double> values;
+    values.push_back(3.142);
+    std::vector<double> values(20);  //Vector contains 20 double values - all 0s
+    std::vector<long> numbers(20,99L) //vector contains 20 long values - all 99
+    std::vector<unsigned int> primes {2,3,5,7};
+    primes.clear()      //Remove all elements
+    primes.pop_back()   //remove last element
+
+
+#24 Pointers & references
+    const char* pstars[] {
+            "Fatty Arbuckle",
+            "Clara Bow",
+            "Mae
+    }
+
+
+#25
+
+    auto pdata{ std::make_unique<double>(999.0)};
+
+    const size_t n {100};
+    std::unique_ptr<double[]> pvalues {new double[n]}; //Dynamically create array of n elements
+
+    or,
+
+    auto pvalues{ std::make_unique<double[]>(n)};      //Dynamically create array of n elements
+
+    pvalues.reset();  //address is nullptr
+
+    std::shared_ptr<double> pdata{new double {999.0}};
+
+    std::shared_ptr<double> pdata2;  //pointer contains nullptr
+    pdata2=pdata;       //copy pointer - both point to the same variable
+
+
+#26  std::string
+    std::string proverb {"Many a mickle makes s muckle"};
+
+    const char* proverb_c_str = proverb.c_str();  //const
+    char * proberb_data = proverb.data()  //non-const
+
+    proverb.length();
+    std::string sleeping(6, 'z'); //"zzzzzz" 
+    std::string part_literal { "least said soonest mended.",5};  //"Least"
+
+    std::string sentence {proverb};
+    std::string phrase {proverb, 0, 13};  //Initialize with 13 characters starting at index 0
+
+    //numeric -> string
+    const std::string result_string{ "The result equals:"};
+    double result = 3.1415;
+    std::cout<< (result_string + std::to_string(result))<<std::endl;
+
+    //Accessing character in a string
+    for(auto & ch : sentence)
+        ch = std::toupper(ch);
+
+    std::isalpha(ch);  //check for a letter
+    std::tolower(ch)   //convert lower
+
+    //Accessing substring
+    std::string phrase {"The higher the fewer."};
+    std::string word1 {phrase.substr(4,6)};   //"higher"
+
+    word.compare("and"); //compare with 
+
+    sentence.find("Ma")    //Ouputs index , std::string::npos if substr not found
+    sentence.find_first_of("<list of chars>");
+    sentence.find_last_of("<list of chars>");
+    sentence.find_first_not_of("<list of chars>");
+    sentence.find_last_not_of("<list of chars>");
+    sentencd.rfind(string);
+    phrase.insert(14,words);
+    text.phrase(13,5,"Gruntfun");
+    std::stoi(s)   //string to integer no.
+    //similarly stol, stoll, stoull,stof,stod,stold
+
+    //string streams
+    std::stringstream ss;
+    ss<<std::setprecision(4)<<std::setw(7)<<std::right<<values[i];
+
+    std::string s{ss.str()}; //extract string from string stream
+
+    //strings of internaional chars
+    std::wstring , std::u16string , std::u32string
+
+    //Raw string Literals
+    auto escape{ R"(c:\programdata\mycompany)"};
+    auto text
+    { LR"(First line.
+      second line.
+      Third line.
+      th end.)"};
+    std::regex reg{R"(\*)"};
+
+    //what is your was string literal contains )"
+    R"*("The answer is "(a-b)" not "(c-d)")*"   //c++ allows u to use any delimiter as here *(
