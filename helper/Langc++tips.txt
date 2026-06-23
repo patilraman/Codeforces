@@ -340,3 +340,12 @@ auto apply(F&& f, T value)
 {
    return f(value);
 }
+//typical example of simplified & readble code with auto
+std::map<int, std::string> m;
+
+for(std::map<int, std::string>::const_iterator
+     it = m.cbegin(); it!=m.cend();++it)
+{/*...*/}
+
+for(auto it=m.cbegin();it!=m.cend();++it)
+{/*...*/}
