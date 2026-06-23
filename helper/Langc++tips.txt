@@ -321,3 +321,22 @@ const unsgined toe_count {10};
 
     //what is your was string literal contains )"
     R"*("The answer is "(a-b)" not "(c-d)")*"   //c++ allows u to use any delimiter as here *(
+
+#Marius Bancila, Modern C++ Programming Cookbook
+#27 auto
+auto i = 42;
+auto d = 42.5;
+auto s = "text"; //char const *
+auto v = {1,2,3}; //std::initializer_list<int>
+
+auto b = new char[10]{0}; //char *
+auto s1 = std::string {"text"}; //std::string
+auto v1 = std::vector<int> {1,2,3}; //vector<int>
+auto p = std::make_shared<int>(42); //std::shared_ptr<int>
+auto upper = [](char const c) {return toupper(c);}; //NOTE: use this..unless u want to pass or return fro func
+auto add = [](auto const a, auto const b) { return a+b;};
+template <typename F, typename T>
+auto apply(F&& f, T value)
+{
+   return f(value);
+}
