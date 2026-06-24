@@ -553,3 +553,27 @@ std::less l;      //deduces std::less<void>
       m.unwrap();
    }
 
+//using subscript operator to access elements in a collecion
+//c++23 allows overload the subscript operator with multiple arguments:
+
+e.g. multidimensional container c++23
+template <typename T, size_t ROWS, size_t COLS>
+struct matrix
+{
+   T const& operator[] (size_t cont row, size_t const col) const
+   {
+      if((row >= ROWS)||(col >= COLS))
+         throw std::runtime_error("invalid index");
+      return data[ROWS*COLS+col];
+   }
+
+   T& operator[](size_t const row, size_t const col)
+   {
+      if((row>=ROWS)|(col >= COLS))
+         throws std::runtime_error("invalid indiex");
+      return data[ROWS*COLS +col];
+   }
+
+   private:
+      std::array<T, ROWS,COLS> data;
+}
