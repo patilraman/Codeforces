@@ -427,4 +427,129 @@ class Derived2 final: public Derived 1
    virtual void foo() override {};
 }
 
+//using explicit constructors and conversion operators to avoid implicit conversion
+class string_buffer
+{
+public:
+   explicit string_buffer(){}
+   explicit string_buffer(size_t const size)(data.resize(size);}
+
+   explicit operator char const*() const {return data.c_str();}
+};
+
+//using unnamed namespace instead of static global
+// external linkage / internal linkage
+// similar to static used in C lang , for duplicate symbols conflict resolution in mulitple files
+e.g.
+//file1.cpp
+namespace
+{
+   void print(int)
+   {
+   }
+}
+//file2.cpp
+namespace
+{
+   void print(int)
+   {
+   }
+
+//
+//Using inline namespace for symbol versioning
+//to provide multiple versions of library, and let user decide what to use.
+e.g.
+namespace modernlib
+{
+   #ifndef LIB_VERSION_2
+   inline namespace version_1
+   {
+      template<typename T>
+      int test(T value) {return 1;}
+   }
+   #endif
+
+   #ifndef LIB_VERSION_1
+   inline namespace version_2
+   {
+      template<typename T>
+      int test(T value){ return 2;}
+   }
+   #endif
+}
+
+//Using structured bindings to handle multi-return values
+e.g.
+std::tuple<int, std::string, double> find()
+{
+   return {1,"marius",1234.15};
+}
+
+auto [id, name, score] = find();
+
+if(auto[id, name, score] = find();score>1000)
+{
+   std::count<<name<<'\n';
+}
+   //structured bingins for class, arrays
+e.g.
+struct foo
+{
+   int id;
+   std::string name;
+}
+
+foo f{42, "john"};
+auto [1,n] =f;
+auto&[ri,rn] = f;
+
+int arr[] = {1,2};
+auto [a,b] = arr;
+
+   //enhancements in c++20, suport in lambdas
+   foo f{42,"john"};
+   auto [1,n] = f;
+   auto l1 = [i] {std::cout<<i;};
+   auto l2 = [=] { std::count<<i;};
+   auto l3 = [&i] {std::cout<<i;};
+   auto l4 = [&] { std::cout<<i;};
+
+   //c++26
+   foo f{42,"john"};
+   auto [_,n] = f;
+
+//class template argument deduction
+//c++17
+std::pair p{42, "demo"};  //deduces std::pair<int,char const*>
+std::vector v{1,2};      //deduces std::vector<int>
+std::less l;      //deduces std::less<void>
+   
+   //case here deduction doesn't work
+   template <typename T>
+   struct Box
+   {
+      Box(T&& t) : content(std::forward<T>(t)){}
+      virtual void unwrap()
+      { std::cout<<"unwrapping" << content <<'\n';}
+
+      T content;
+   };
+
+   template <typename T>
+   struct magic_box :public box<T>
+   {
+      using box<t>::box;
+
+      virtual void unwrap()override
+      {std::cout<<"unwrapping"<<box<T>::context <<'\n';}
+   };
+
+   int main()
+   {
+      Box b(42);   //OK
+      b.unwrap();
+
+      magic_box m(21);   //error: expects magix_box<int>
+      m.unwrap();
+   }
 
